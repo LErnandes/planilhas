@@ -1,40 +1,44 @@
 import pandas as pd
 from pandas import ExcelWriter
 from pandas import ExcelFile
-from xlsxwriter import Workbook
+from openpyxl import Workbook, load_workbook
+
+A = ['Contas', 'Luz', 'Água', 'Gás', 'Internet']
+val = ['Valor', '80', '60', '70', '120']
+c = 0
 
 # Escrevendo
+# Criando uma planilha
+book = Workbook()
+sheet = book.active
 
-'''book = Workbook('Tabela.xlsx')
-pla = book.add_worksheet()
+while c < len(A):
+    sheet['A{}'.format(c+1)].value = A[c]
+    c += 1
 
-tab = (
-    ['Número Missão', 'Pontos Missão', 'Pontos'],
-    [1, 46, 0]
-)
+book.save('Tabela.xlsx')
 
-linha = 0
-coluna = 0
+c = 0
 
-# Escrevendo
-for nm, pm, po in tab:
-    pla.write(linha, coluna, nm)
-    pla.write(linha, coluna+1, pm)
-    pla.write(linha, coluna+2, po)
-    linha +=1
+# Carregado uma planilha
+book = load_workbook('Tabela.xlsx')
+sheet = book['Sheet']
 
-book.close()'''
+while c < len(val):
+    sheet['B{}'.format(c+1)].value = val[c]
+    c += 1
+
+book.save('Tabela.xlsx')
 
 # Lendo
 
 tabe = pd.read_excel('Tabela.xlsx')
 
-# Coluna
-# tabe['Número Missão']
+# Mostrar tudo da coluna
+#print(tabe['Contas'])
 
 # Linha
 for i in tabe.index:
-    con = tabe['Número Missão'][i]
-    #print(tabe['Número Missão'][i])
-    #print(i)
-    print('{}: {}'.format(i, con))
+    con = tabe['Contas'][i]
+    val = tabe['Valor'][i]
+    print('{}: {}'.format(con, val))
